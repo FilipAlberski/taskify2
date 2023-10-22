@@ -12,6 +12,7 @@ import http from 'http';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import connectDB from './utils/connectDB';
+import authMiddleware from './middleware/authMiddleware';
 //routes import
 import authRoutes from './routes/authRoutes';
 
@@ -29,7 +30,7 @@ app.use(helmet());
 app.use('/api/v1/auth', authRoutes);
 
 //test route
-app.get('/test', (req, res) => {
+app.get('/test', authMiddleware, (req, res) => {
   res.send('Hello World');
 });
 

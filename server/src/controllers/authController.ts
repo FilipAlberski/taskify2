@@ -30,6 +30,11 @@ const register = async (
         expiresIn: '1d',
       }
     );
+    res.cookie('jwt', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 24 * 60 * 60 * 1000,
+    });
     res.status(201).json({
       status: 'success',
       token,
@@ -85,6 +90,14 @@ const login = async (
         expiresIn: rememberMe ? '30d' : '1d',
       }
     );
+
+    res.cookie('jwt', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: rememberMe
+        ? 30 * 24 * 60 * 60 * 1000
+        : 24 * 60 * 60 * 1000,
+    });
 
     res.status(200).json({
       status: 'success',

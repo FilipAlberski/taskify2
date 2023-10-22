@@ -1,11 +1,15 @@
 {
     "compilerOptions": {
+      "lib": ["es2015"],
+
+  
       "target": "ES6",
       "module": "CommonJS",
       "outDir": "./dist",
       "rootDir": "./src",
       "strict": true,
-      "esModuleInterop": true
+      "esModuleInterop": true,
+      "typeRoots" : ["./node_modules/@types", "./typings"]
     },
     "include": ["src/**/*.ts"],
     "exclude": ["node_modules"]
