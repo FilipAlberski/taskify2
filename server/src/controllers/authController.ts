@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/User';
-import logger from '../utils/logger';
 import CustomError from '../utils/customError';
 
 const register = async (
@@ -13,12 +12,12 @@ const register = async (
   try {
     const { firstName, lastName, email, password } = req.body;
     if (!firstName || !lastName || !email || !password) {
-      throw new Error('Please provide all fields');
+      throw new CustomError(
+        'Please provide all required fields',
+        400
+      );
     }
-    const isExisting = await User.findOne({ email });
-    if (isExisting) {
-      throw new Error('User already exists');
-    }
+
     const hashedPassword = await bcrypt.hash(password, 12);
     const newUser = await User.create({
       firstName,
@@ -26,6 +25,8 @@ const register = async (
       email,
       password: hashedPassword,
     });
+
+    // Generate JWT token
     const token = jwt.sign(
       { userId: newUser._id },
       process.env.JWT_SECRET!,
@@ -33,11 +34,14 @@ const register = async (
         expiresIn: '1d',
       }
     );
+
+    // Set JWT token in a secure cookie
     res.cookie('jwt', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       maxAge: 24 * 60 * 60 * 1000,
     });
+
     res.status(201).json({
       status: 'success',
       token,
@@ -45,11 +49,8 @@ const register = async (
         user: newUser,
       },
     });
-  } catch (err: any) {
-    res.status(500).json({
-      status: 'error',
-      message: err.message,
-    });
+  } catch (err) {
+    next(err); // Pass the error to the error handling middleware
   }
 };
 
@@ -62,30 +63,22 @@ const login = async (
     const { email, password, rememberMe } = req.body;
 
     if (!email || !password) {
-      return res.status(400).json({
-        status: 'fail',
-        message: 'Please provide email and password',
-      });
+      throw new CustomError('Please provide email and password', 400);
     }
 
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(400).json({
-        status: 'fail',
-        message: 'Incorrect email or password',
-      });
+      throw new CustomError('Incorrect email or password', 400);
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      return res.status(400).json({
-        status: 'fail',
-        message: 'Incorrect email or password',
-      });
+      throw new CustomError('Incorrect email or password', 400);
     }
 
+    // Generate JWT token
     const token = jwt.sign(
       { userId: user._id },
       process.env.JWT_SECRET!,
@@ -94,6 +87,7 @@ const login = async (
       }
     );
 
+    // Set JWT token in a secure cookie
     res.cookie('jwt', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
@@ -107,11 +101,8 @@ const login = async (
       token,
       user,
     });
-  } catch (err: any) {
-    res.status(500).json({
-      status: 'error',
-      message: err.message,
-    });
+  } catch (err) {
+    next(err); // Pass the error to the error handling middleware
   }
 };
 
@@ -120,6 +111,7 @@ const logout = async (
   res: Response,
   next: NextFunction
 ) => {
+  // Clear the JWT cookie to log the user out
   res.cookie('jwt', '', { maxAge: 1 });
   res.status(200).json({
     status: 'success',

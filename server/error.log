@@ -2,3 +2,13 @@
 {"level":"error","timestamp":"2023-10-23T15:56:02.142Z"}
 {"level":"error","message":"This is a test error","timestamp":"2023-10-23T15:56:13.517Z"}
 {"level":"error","message":"This is a test error","timestamp":"2023-10-23T15:56:15.303Z"}
+{"level":"error","message":"This is a test error","timestamp":"2023-10-23T15:57:50.473Z"}
+{"level":"error","message":"This is a test error","timestamp":"2023-10-23T15:57:51.182Z"}
+{"level":"error","message":"This is a test error","timestamp":"2023-10-23T15:57:54.499Z"}
+{"level":"error","message":"E11000 duplicate key error collection: test.users index: email_1 dup key: { email: \"john3errereree33342211@email.com\" }","timestamp":"2023-10-23T15:59:31.625Z"}
+{"level":"error","message":"E11000 duplicate key error collection: test.users index: email_1 dup key: { email: \"john3errereree33342211@email.com\" }","timestamp":"2023-10-23T15:59:34.036Z"}
+{"level":"error","message":"Incorrect email or password","timestamp":"2023-10-23T16:00:12.975Z"}
+{"level":"error","message":"Incorrect email or password","timestamp":"2023-10-23T16:00:14.613Z"}
+{"level":"error","message":"Not Found route - /twojastara","timestamp":"2023-10-23T16:00:22.014Z"}
+{"level":"error","message":"Not Found route - /twojastara","timestamp":"2023-10-23T16:00:23.346Z"}
+{"level":"error","message":"This is a test error","timestamp":"2023-10-23T16:00:25.188Z"}
