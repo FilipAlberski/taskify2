@@ -1,8 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import User from '../models/User';
+import { PrismaClient } from '@prisma/client';
 import CustomError from '../utils/customError';
+
+const prisma = new PrismaClient();
 
 const register = async (
   req: Request,
@@ -11,6 +13,7 @@ const register = async (
 ) => {
   try {
     const { firstName, lastName, email, password } = req.body;
+
     if (!firstName || !lastName || !email || !password) {
       throw new CustomError(
         'Please provide all required fields',
@@ -18,16 +21,18 @@ const register = async (
       );
     }
 
-    const newUser = await User.create({
-      firstName,
-      lastName,
-      email,
-      password,
+    const newUser = await prisma.user.create({
+      data: {
+        firstName,
+        lastName,
+        email,
+        password,
+      },
     });
 
     // Generate JWT token
     const token = jwt.sign(
-      { userId: newUser._id },
+      { userId: newUser.id },
       process.env.JWT_SECRET!,
       {
         expiresIn: '1d',
@@ -65,7 +70,11 @@ const login = async (
       throw new CustomError('Please provide email and password', 400);
     }
 
-    const user = await User.findOne({ email });
+    const user = await prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
 
     if (!user) {
       throw new CustomError('Incorrect email or password', 400);
@@ -79,7 +88,7 @@ const login = async (
 
     // Generate JWT token
     const token = jwt.sign(
-      { userId: user._id },
+      { userId: user.id },
       process.env.JWT_SECRET!,
       {
         expiresIn: rememberMe ? '30d' : '1d',

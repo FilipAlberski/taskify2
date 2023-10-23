@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import User from '../models/User';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 const authMiddleware = async (
   req: Request | any,
@@ -29,7 +31,11 @@ const authMiddleware = async (
       });
     }
 
-    const currentUser = await User.findById(decoded.userId);
+    const currentUser = await prisma.user.findUnique({
+      where: {
+        id: decoded.userId,
+      },
+    });
 
     if (!currentUser) {
       return res.status(401).json({
@@ -46,6 +52,8 @@ const authMiddleware = async (
       status: 'error',
       message: 'Internal server error',
     });
+  } finally {
+    await prisma.$disconnect(); // Disconnect Prisma client after the request is processed.
   }
 };
 
