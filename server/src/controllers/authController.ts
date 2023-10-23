@@ -18,12 +18,11 @@ const register = async (
       );
     }
 
-    const hashedPassword = await bcrypt.hash(password, 12);
     const newUser = await User.create({
       firstName,
       lastName,
       email,
-      password: hashedPassword,
+      password,
     });
 
     // Generate JWT token

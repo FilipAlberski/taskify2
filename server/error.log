@@ -12,3 +12,9 @@
 {"level":"error","message":"Not Found route - /twojastara","timestamp":"2023-10-23T16:00:22.014Z"}
 {"level":"error","message":"Not Found route - /twojastara","timestamp":"2023-10-23T16:00:23.346Z"}
 {"level":"error","message":"This is a test error","timestamp":"2023-10-23T16:00:25.188Z"}
+{"level":"error","message":"User validation failed: password: Password must be at least 6 characters long","timestamp":"2023-10-23T16:10:56.483Z"}
+{"level":"error","message":"E11000 duplicate key error collection: test.users index: email_1 dup key: { email: \"john3erre33reree33342211@email.com\" }","timestamp":"2023-10-23T16:11:09.790Z"}
+{"level":"error","message":"E11000 duplicate key error collection: test.users index: email_1 dup key: { email: \"john3erre33reree33342211@email.com\" }","timestamp":"2023-10-23T16:12:46.535Z"}
+{"level":"error","message":"E11000 duplicate key error collection: test.users index: email_1 dup key: { email: \"john3erre33reree33342211@email.com\" }","timestamp":"2023-10-23T16:12:47.519Z"}
+{"level":"error","message":"E11000 duplicate key error collection: test.users index: email_1 dup key: { email: \"john3erre33reree33342211@email.com\" }","timestamp":"2023-10-23T16:12:51.960Z"}
+{"level":"error","message":"E11000 duplicate key error collection: test.users index: email_1 dup key: { email: \"john3erre33reree33342211@email.com\" }","timestamp":"2023-10-23T16:12:52.500Z"}

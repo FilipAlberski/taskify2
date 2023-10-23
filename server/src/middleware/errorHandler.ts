@@ -11,6 +11,7 @@ const errorHandler = (
   let statusCode = err.statusCode || 500;
   let status = err.status || 'error';
   let message = err.message || 'Internal Server Error';
+  let ip = req.ip;
 
   // Log the error for debugging purposes
   logger.error(err.message);
