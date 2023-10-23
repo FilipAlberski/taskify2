@@ -13,8 +13,12 @@ import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import connectDB from './utils/connectDB';
 import authMiddleware from './middleware/authMiddleware';
+import { transports, format, createLogger } from 'winston';
+import expressWinston from 'express-winston';
+import errorHandler from './middleware/errorHandler';
 //routes import
 import authRoutes from './routes/authRoutes';
+import notFound from './utils/notFound';
 
 mongoose.set('strictQuery', false);
 
@@ -30,10 +34,14 @@ app.use(helmet());
 app.use('/api/v1/auth', authRoutes);
 
 //test route
-app.get('/test', authMiddleware, (req, res) => {
-  res.send('Hello World');
+app.get('/test', (req, res) => {
+  res.send('Hello World!');
 });
 
+// Error routes
+
+app.all('*', notFound);
+app.use(errorHandler);
 const server = http.createServer(app);
 
 const PORT = process.env.PORT || 4000;

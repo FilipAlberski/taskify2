@@ -16,6 +16,10 @@ const register = async (
         message: 'Please provide all required fields',
       });
     }
+    const isExisting = await User.findOne({ email });
+    if (isExisting) {
+      throw new Error('User already exists');
+    }
     const hashedPassword = await bcrypt.hash(password, 12);
     const newUser = await User.create({
       firstName,
