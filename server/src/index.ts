@@ -17,11 +17,10 @@ import { transports, format, createLogger } from 'winston';
 import expressWinston from 'express-winston';
 import errorHandler from './middleware/errorHandler';
 import CustomError from './utils/customError';
+
 //routes import
 import authRoutes from './routes/authRoutes';
 import notFound from './utils/notFound';
-
-mongoose.set('strictQuery', false);
 
 const app = express();
 
