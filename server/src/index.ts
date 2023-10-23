@@ -16,6 +16,7 @@ import authMiddleware from './middleware/authMiddleware';
 import { transports, format, createLogger } from 'winston';
 import expressWinston from 'express-winston';
 import errorHandler from './middleware/errorHandler';
+import CustomError from './utils/customError';
 //routes import
 import authRoutes from './routes/authRoutes';
 import notFound from './utils/notFound';
@@ -35,7 +36,7 @@ app.use('/api/v1/auth', authRoutes);
 
 //test route
 app.get('/test', (req, res) => {
-  res.send('Hello World!');
+  throw new Error('This is a test error');
 });
 
 // Error routes

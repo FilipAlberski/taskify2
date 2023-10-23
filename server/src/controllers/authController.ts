@@ -11,10 +11,7 @@ const register = async (
   try {
     const { firstName, lastName, email, password } = req.body;
     if (!firstName || !lastName || !email || !password) {
-      return res.status(400).json({
-        status: 'fail',
-        message: 'Please provide all required fields',
-      });
+      throw new Error('Please provide all fields');
     }
     const isExisting = await User.findOne({ email });
     if (isExisting) {
