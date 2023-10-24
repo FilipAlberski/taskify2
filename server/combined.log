@@ -129,3 +129,16 @@
 {"level":"error","message":"Error level log message","service":"user-service","timestamp":"2023-10-24 16:53:54"}
 {"level":"info","message":"MongoDB connected successfully.","service":"user-service","timestamp":"2023-10-24 16:55:43"}
 {"level":"info","message":"MongoDB connected successfully.","service":"user-service","timestamp":"2023-10-24 17:01:36"}
+{"level":"info","message":"MongoDB connected successfully.","service":"user-service","timestamp":"2023-10-24 17:03:29"}
+{"level":"info","message":"MongoDB connected successfully.","service":"user-service","timestamp":"2023-10-24 17:03:42"}
+{"level":"info","message":"MongoDB connected successfully.","service":"user-service","timestamp":"2023-10-24 17:04:02"}
+{"level":"info","message":"MongoDB connected successfully.","service":"user-service","timestamp":"2023-10-24 17:04:04"}
+{"level":"info","message":"MongoDB connected successfully.","service":"user-service","timestamp":"2023-10-24 17:05:05"}
+{"level":"info","message":"MongoDB connected successfully.","service":"user-service","timestamp":"2023-10-24 17:05:12"}
+{"level":"info","message":"MongoDB connected successfully.","service":"user-service","timestamp":"2023-10-24 17:05:33"}
+{"level":"info","message":"MongoDB connected successfully.","service":"user-service","timestamp":"2023-10-24 17:05:46"}
+{"level":"info","message":"MongoDB connected successfully.","service":"user-service","timestamp":"2023-10-24 17:05:56"}
+{"level":"info","message":"MongoDB connected successfully.","service":"user-service","timestamp":"2023-10-24 17:06:18"}
+{"level":"info","message":"MongoDB connected successfully.","service":"user-service","timestamp":"2023-10-24 17:06:58"}
+{"level":"info","message":"MongoDB connected successfully.","service":"user-service","timestamp":"2023-10-24 17:07:01"}
+{"level":"info","message":"MongoDB connected successfully.","service":"user-service","timestamp":"2023-10-24 17:07:10"}
