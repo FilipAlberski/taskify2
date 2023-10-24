@@ -1,51 +1,62 @@
 import dotenv from 'dotenv';
-dotenv.config(
-  process.env.NODE_ENV === 'production'
-    ? { path: '../.env.production' }
-    : { path: '../.env.development' }
-);
-import express from 'express';
+dotenv.config({
+  path: '../.env',
+}); // Load environment variables from .env file
+import express, { Request, Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
+import bodyParser from 'body-parser';
 import cors from 'cors';
-import compression from 'compression';
-import http from 'http';
-import cookieParser from 'cookie-parser';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 import helmet from 'helmet';
+import compression from 'compression';
+import morgan from 'morgan';
+import winston from 'winston';
+import expressAsyncErrors from 'express-async-errors';
+// Import other routes and utils as needed
 import connectDB from './utils/connectDB';
-import authMiddleware from './middleware/authMiddleware';
-import { transports, format, createLogger } from 'winston';
-import expressWinston from 'express-winston';
-import errorHandler from './middleware/errorHandler';
-import CustomError from './utils/customError';
-
-//routes import
-import authRoutes from './routes/authRoutes';
+import { errorHandler } from './middleware/errorHandler';
 import notFound from './utils/notFound';
+import logger from './utils/logger';
 
+// Initialize app
 const app = express();
 
+// Middleware setup
+app.use(helmet()); // Set security-related HTTP headers
+app.use(compression()); // Compress response bodies
+app.use(bodyParser.json());
 app.use(cors());
-app.use(compression());
-app.use(express.json());
-app.use(cookieParser());
-app.use(helmet());
+app.use(morgan('combined')); // HTTP request logging
 
-// Routes
-app.use('/api/v1/auth', authRoutes);
+// If not in production, log to console too
+if (process.env.NODE_ENV !== 'production') {
+  logger.add(
+    new winston.transports.Console({
+      format: winston.format.simple(),
+    })
+  );
+}
 
-//test route
-app.get('/test', (req, res) => {
-  throw new Error('This is a test error');
+// Connect to MongoDB
+connectDB();
+
+// Sample route to test
+app.get('/testLogger', (req: Request, res: Response) => {
+  logger.info('Info level log message');
+  logger.warn('Warning level log message');
+  logger.error('Error level log message');
+  res.send('Hello from Express & TypeScript with enhancements!');
 });
 
-// Error routes
+// Handle 404
+app.use(notFound);
 
-app.all('*', notFound);
+// Global error handler
 app.use(errorHandler);
-const server = http.createServer(app);
 
-const PORT = process.env.PORT || 4000;
-connectDB();
-server.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
+// Start the server
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+  console.log(`Server started on port ${PORT}`);
 });

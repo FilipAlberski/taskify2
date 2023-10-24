@@ -1,33 +1,21 @@
-import { Request, Response, NextFunction } from 'express';
-import CustomError from '../utils/customError';
-import logger from '../utils/logger';
+// middlewares/errorHandler.ts
 
-const errorHandler = (
+import { Request, Response, NextFunction } from 'express';
+import logger from '../utils/logger'; // Import the logger utility
+
+export const errorHandler = (
   err: any,
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  let statusCode = err.statusCode || 500;
-  let status = err.status || 'error';
-  let message = err.message || 'Internal Server Error';
-  let ip = req.ip;
+  // Log the error using winston logger
+  logger.error(`Error: ${err.message}, Stack: ${err.stack}`);
 
-  // Log the error for debugging purposes
-  logger.error(err.message);
-
-  // If the error is an instance of a custom error class, handle it appropriately
-  if (err instanceof CustomError) {
-    statusCode = err.statusCode;
-    status = err.status;
-    message = err.message;
-  }
-
-  // Send a JSON response with the error details
+  // Send a response to the client
+  const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
   res.status(statusCode).json({
-    status,
-    message,
+    message: 'Something went wrong',
+    error: process.env.NODE_ENV === 'development' ? err.message : {},
   });
 };
-
-export default errorHandler;

@@ -1,3 +1,5 @@
+// utils/notFound.ts
+
 import { Request, Response, NextFunction } from 'express';
 
 const notFound = (
@@ -5,7 +7,7 @@ const notFound = (
   res: Response,
   next: NextFunction
 ) => {
-  const error = new Error(`Not Found route - ${req.originalUrl}`);
+  const error = new Error(`Not Found - ${req.originalUrl}`);
   res.status(404);
   next(error);
 };
