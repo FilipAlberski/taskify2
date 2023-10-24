@@ -13,7 +13,7 @@ import compression from 'compression';
 import morgan from 'morgan';
 import winston from 'winston';
 import expressAsyncErrors from 'express-async-errors';
-// Import other routes and utils as needed
+// Import middleware and utils
 import connectDB from './utils/connectDB';
 import { errorHandler } from './middleware/errorHandler';
 import notFound from './utils/notFound';
