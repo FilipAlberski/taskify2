@@ -8,19 +8,19 @@ import helmet from 'helmet';
 import compression from 'compression';
 import morgan from 'morgan';
 import winston from 'winston';
-import { PrismaClient } from '@prisma/client';
 // Import middleware and utils
 import connectDB from './config/connectDB';
 import { errorHandler } from './middleware/errorHandler';
 import notFound from './utils/notFound';
 import logger from './utils/logger';
+import prisma from './config/connectDB';
 
 //test env
 console.log(process.env.TEST_ENV as string);
 
 // Initialize app
 const app = express();
-const prisma = new PrismaClient();
+prisma.$connect();
 
 // Middleware setup
 app.use(helmet()); // Set security-related HTTP headers
@@ -39,9 +39,6 @@ if (process.env.NODE_ENV !== 'production') {
   );
 }
 
-// Connect to MongoDB
-//connectDB();
-
 // Sample route to test
 app.get('/testLogger', (req: Request, res: Response) => {
   logger.info('Info level log message');
@@ -49,6 +46,11 @@ app.get('/testLogger', (req: Request, res: Response) => {
   logger.error('Error level log message');
   res.send('Hello from Express & TypeScript with enhancements!');
 });
+app.get('/tests', async (req: Request, res: Response) => {
+  const tests = await prisma.test.findMany();
+  res.json(tests);
+});
+//routes
 
 // Handle 404
 app.use(notFound);
