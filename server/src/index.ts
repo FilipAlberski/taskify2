@@ -20,9 +20,6 @@ import { errorHandler } from './middleware/errorHandler';
 import notFound from './utils/notFound';
 import logger from './utils/logger';
 
-//routes import
-import testRoutes from './routes/testRoutes';
-
 //test env
 console.log(process.env.TEST_ENV as string);
 
@@ -46,7 +43,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // Connect to MongoDB
-connectDB();
+//connectDB();
 
 // Sample route to test
 app.get('/testLogger', (req: Request, res: Response) => {
@@ -55,8 +52,6 @@ app.get('/testLogger', (req: Request, res: Response) => {
   logger.error('Error level log message');
   res.send('Hello from Express & TypeScript with enhancements!');
 });
-//test routes
-app.use('/test', testRoutes);
 
 // Handle 404
 app.use(notFound);
