@@ -1,19 +1,14 @@
 import dotenv from 'dotenv';
 import path from 'path';
-
 dotenv.config({ path: path.join(__dirname, '../../.env') });
-// Load environment variables from .env file
+require('express-async-errors');
 import express, { Request, Response, NextFunction } from 'express';
-import { Sequelize } from 'sequelize';
-import bodyParser from 'body-parser';
 import cors from 'cors';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 import helmet from 'helmet';
 import compression from 'compression';
 import morgan from 'morgan';
 import winston from 'winston';
-import expressAsyncErrors from 'express-async-errors';
+import { PrismaClient } from '@prisma/client';
 // Import middleware and utils
 import connectDB from './config/connectDB';
 import { errorHandler } from './middleware/errorHandler';
@@ -25,11 +20,13 @@ console.log(process.env.TEST_ENV as string);
 
 // Initialize app
 const app = express();
+const prisma = new PrismaClient();
 
 // Middleware setup
 app.use(helmet()); // Set security-related HTTP headers
 app.use(compression()); // Compress response bodies
-app.use(bodyParser.json());
+
+app.use(express.json()); // Parse JSON bodies
 app.use(cors());
 app.use(morgan('combined')); // HTTP request logging
 
