@@ -1,46 +1,23 @@
-import mongoose from 'mongoose';
-import logger from './logger'; // Make sure you have this utility.
+import logger from './logger';
+import { Sequelize } from 'sequelize';
 
-const MONGO_URI =
-  process.env.MONGO_URI || 'mongodb://localhost:27017/yourDBName'; // replace with your connection string
-const CONNECTION_OPTIONS = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-};
+const DB_URI = process.env.DB_URI || '';
 
-const connectWithRetry = async () => {
-  try {
-    await mongoose.connect(MONGO_URI, CONNECTION_OPTIONS as any);
-    logger.info('MongoDB connected successfully.');
-  } catch (error) {
-    logger.error(
-      'MongoDB connection failed. Retrying in 5 seconds.',
-      error
-    );
-    setTimeout(connectWithRetry, 5000);
-  }
-};
+const sequelize = new Sequelize(DB_URI, {
+  dialect: 'postgres',
+  logging: (msg) => logger.info(msg), // Integrate Sequelize logging with your Winston logger
+});
 
 const connectDB = async () => {
-  await connectWithRetry();
-
-  mongoose.connection.on('connected', () => {
-    logger.info('MongoDB event connected.');
-  });
-
-  mongoose.connection.on('error', (err) => {
-    logger.error(`MongoDB event error: ${err}`);
-  });
-
-  mongoose.connection.on('disconnected', () => {
-    logger.warn('MongoDB event disconnected.');
-  });
-
-  process.on('SIGINT', async () => {
-    await mongoose.connection.close();
-    logger.warn('MongoDB disconnected due to app termination.');
-    process.exit(0);
-  });
+  try {
+    await sequelize.authenticate();
+    logger.info(
+      'Connection to the database has been established successfully.'
+    );
+  } catch (error) {
+    logger.error('Unable to connect to the database:', error);
+    process.exit(1); // Exit process with a failure code
+  }
 };
 
 export default connectDB;

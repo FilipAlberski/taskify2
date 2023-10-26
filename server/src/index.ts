@@ -1,9 +1,10 @@
 import dotenv from 'dotenv';
-dotenv.config({
-  path: '../.env',
-}); // Load environment variables from .env file
+import path from 'path';
+
+dotenv.config({ path: path.join(__dirname, '../../.env') });
+// Load environment variables from .env file
 import express, { Request, Response, NextFunction } from 'express';
-import mongoose from 'mongoose';
+import { Sequelize } from 'sequelize';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import bcrypt from 'bcryptjs';
@@ -18,6 +19,10 @@ import connectDB from './utils/connectDB';
 import { errorHandler } from './middleware/errorHandler';
 import notFound from './utils/notFound';
 import logger from './utils/logger';
+
+//test env
+
+console.log(process.env.TEST_ENV as string);
 
 // Initialize app
 const app = express();
