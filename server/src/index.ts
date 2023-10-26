@@ -15,13 +15,15 @@ import morgan from 'morgan';
 import winston from 'winston';
 import expressAsyncErrors from 'express-async-errors';
 // Import middleware and utils
-import connectDB from './utils/connectDB';
+import connectDB from './config/connectDB';
 import { errorHandler } from './middleware/errorHandler';
 import notFound from './utils/notFound';
 import logger from './utils/logger';
 
-//test env
+//routes import
+import testRoutes from './routes/testRoutes';
 
+//test env
 console.log(process.env.TEST_ENV as string);
 
 // Initialize app
@@ -53,6 +55,8 @@ app.get('/testLogger', (req: Request, res: Response) => {
   logger.error('Error level log message');
   res.send('Hello from Express & TypeScript with enhancements!');
 });
+//test routes
+app.use('/test', testRoutes);
 
 // Handle 404
 app.use(notFound);

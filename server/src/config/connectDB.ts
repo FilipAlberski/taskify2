@@ -1,4 +1,4 @@
-import logger from './logger';
+import logger from '../utils/logger';
 import { Sequelize } from 'sequelize';
 
 const DB_URI = process.env.DB_URI || '';
