@@ -1,0 +1,15 @@
+{
+  "name": "taskify2",
+  "version": "1",
+  "main": "index.js",
+  "repository": "https://github.com/FilipAlberski/taskify2.git",
+  "author": "Filip Alberski <alberskif@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "nodemon": "^3.0.1",
+    "ts-node": "^10.9.1"
+  },
+  "scripts": {
+    "server": "nodemon ./server/src/index.ts"
+  }
+}
