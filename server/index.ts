@@ -10,13 +10,18 @@ import morgan from 'morgan';
 import winston from 'winston';
 
 // Import middleware and utils
+import connectDB from './config/db';
 
 import { errorHandler } from './middleware/errorHandler';
 import notFound from './utils/notFound';
 import logger from './utils/logger';
 
 //test env
-console.log(process.env.TEST_ENV as string);
+if (process.env.TEST_ENV !== 'test') {
+  logger.error('dotenv is not working');
+} else {
+  logger.info('dotenv is working');
+}
 
 // Initialize app
 const app = express();
@@ -53,6 +58,9 @@ app.use(notFound);
 
 // Global error handler
 app.use(errorHandler);
+
+//connect to db
+connectDB();
 
 // Start the server
 const PORT = process.env.PORT || 3001;
