@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import path from 'path';
-dotenv.config({ path: path.join(__dirname, '../../.env') });
+dotenv.config({ path: path.join(__dirname, '../.env') });
 require('express-async-errors');
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
@@ -11,18 +11,15 @@ import winston from 'winston';
 
 // Import middleware and utils
 
-import connectDB from './config/connectDB';
 import { errorHandler } from './middleware/errorHandler';
 import notFound from './utils/notFound';
 import logger from './utils/logger';
-import prisma from './config/connectDB';
 
 //test env
 console.log(process.env.TEST_ENV as string);
 
 // Initialize app
 const app = express();
-prisma.$connect();
 
 // Middleware setup
 app.use(helmet()); // Set security-related HTTP headers
@@ -48,10 +45,7 @@ app.get('/testLogger', (req: Request, res: Response) => {
   logger.error('Error level log message');
   res.send('Hello from Express & TypeScript with enhancements!');
 });
-app.get('/tests', async (req: Request, res: Response) => {
-  const tests = await prisma.test.findMany();
-  res.json(tests);
-});
+
 //routes
 
 // Handle 404
