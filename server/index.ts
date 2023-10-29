@@ -35,13 +35,6 @@ app.use(cors());
 app.use(morgan('combined')); // HTTP request logging
 
 // If not in production, log to console too
-if (process.env.NODE_ENV !== 'production') {
-  logger.add(
-    new winston.transports.Console({
-      format: winston.format.simple(),
-    })
-  );
-}
 
 // Sample route to test
 app.get('/testLogger', (req: Request, res: Response) => {
