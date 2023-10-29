@@ -575,14 +575,14 @@
 
 "@prisma/client@^5.5.2":
   version "5.5.2"
-  resolved "https://registry.yarnpkg.com/@prisma/client/-/client-5.5.2.tgz#ce6389e7ad9e9cf0fc2a7c6a0032ad2e12a9fd61"
+  resolved "https://registry.npmjs.org/@prisma/client/-/client-5.5.2.tgz"
   integrity sha512-54XkqR8M+fxbzYqe+bIXimYnkkcGqgOh0dn0yWtIk6CQT4IUCAvNFNcQZwk2KqaLU+/1PHTSWrcHtx4XjluR5w==
   dependencies:
     "@prisma/engines-version" "5.5.1-1.aebc046ce8b88ebbcb45efe31cbe7d06fd6abc0a"
 
 "@prisma/engines-version@5.5.1-1.aebc046ce8b88ebbcb45efe31cbe7d06fd6abc0a":
   version "5.5.1-1.aebc046ce8b88ebbcb45efe31cbe7d06fd6abc0a"
-  resolved "https://registry.yarnpkg.com/@prisma/engines-version/-/engines-version-5.5.1-1.aebc046ce8b88ebbcb45efe31cbe7d06fd6abc0a.tgz#35cd59ed65ee1f9e333f4865ec86a4432c4d0a9c"
+  resolved "https://registry.npmjs.org/@prisma/engines-version/-/engines-version-5.5.1-1.aebc046ce8b88ebbcb45efe31cbe7d06fd6abc0a.tgz"
   integrity sha512-O+qHFnZvAyOFk1tUco2/VdiqS0ym42a3+6CYLScllmnpbyiTplgyLt2rK/B9BTjYkSHjrgMhkG47S0oqzdIckA==
 
 "@prisma/engines@5.5.2":
@@ -705,6 +705,13 @@
     "@types/qs" "*"
     "@types/range-parser" "*"
     "@types/send" "*"
+
+"@types/express-session@^1.17.9":
+  version "1.17.9"
+  resolved "https://registry.yarnpkg.com/@types/express-session/-/express-session-1.17.9.tgz#2811b8c3f2e7efb5fd239e4cb0f26f58de8c0a62"
+  integrity sha512-yIqficLlTPdloeEPhOVenpOUWILkdaXHUWhTOqFGx9JoSuTgeatNjb97k8VvJehbTk0kUSUAHy5r27PXMga89Q==
+  dependencies:
+    "@types/express" "*"
 
 "@types/express@*", "@types/express@^4.17.20":
   version "4.17.20"
@@ -1323,10 +1330,28 @@ convert-source-map@^2.0.0:
   resolved "https://registry.npmjs.org/convert-source-map/-/convert-source-map-2.0.0.tgz"
   integrity sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==
 
+cookie-parser@^1.4.6:
+  version "1.4.6"
+  resolved "https://registry.npmjs.org/cookie-parser/-/cookie-parser-1.4.6.tgz"
+  integrity sha512-z3IzaNjdwUC2olLIB5/ITd0/setiaFMLYiZJle7xg5Fe9KWAceil7xszYfHHBtDFYLSgJduS2Ty0P1uJdPDJeA==
+  dependencies:
+    cookie "0.4.1"
+    cookie-signature "1.0.6"
+
 cookie-signature@1.0.6:
   version "1.0.6"
   resolved "https://registry.npmjs.org/cookie-signature/-/cookie-signature-1.0.6.tgz"
   integrity sha512-QADzlaHc8icV8I7vbaJXJwod9HWYp8uCqf1xa4OfNu1T7JVxQIrUgOWtHdNDtPiywmFbiS12VjotIXLrKM3orQ==
+
+cookie@0.4.1:
+  version "0.4.1"
+  resolved "https://registry.npmjs.org/cookie/-/cookie-0.4.1.tgz"
+  integrity sha512-ZwrFkGJxUR3EIoXtO+yVE69Eb7KlixbaeAWfBQB9vVsNn/o+Yw69gBWSSDK825hQNdN+wF8zELf3dFNl/kxkUA==
+
+cookie@0.4.2:
+  version "0.4.2"
+  resolved "https://registry.npmjs.org/cookie/-/cookie-0.4.2.tgz"
+  integrity sha512-aSWTXFzaKWkvHO1Ny/s+ePFpvKsPnjc551iI41v3ny/ow6tBG5Vd+FuqGNhh1LxOmVzOlGUriIlOaokOvhaStA==
 
 cookie@0.5.0:
   version "0.5.0"
@@ -1566,6 +1591,20 @@ express-async-errors@^3.1.1:
   resolved "https://registry.npmjs.org/express-async-errors/-/express-async-errors-3.1.1.tgz"
   integrity sha512-h6aK1da4tpqWSbyCa3FxB/V6Ehd4EEB15zyQq9qe75OZBp0krinNKuH4rAY+S/U/2I36vdLAUFSjQJ+TFmODng==
 
+express-session@^1.17.3:
+  version "1.17.3"
+  resolved "https://registry.yarnpkg.com/express-session/-/express-session-1.17.3.tgz#14b997a15ed43e5949cb1d073725675dd2777f36"
+  integrity sha512-4+otWXlShYlG1Ma+2Jnn+xgKUZTMJ5QD3YvfilX3AcocOAbIkVylSWEklzALe/+Pu4qV6TYBj5GwOBFfdKqLBw==
+  dependencies:
+    cookie "0.4.2"
+    cookie-signature "1.0.6"
+    debug "2.6.9"
+    depd "~2.0.0"
+    on-headers "~1.0.2"
+    parseurl "~1.3.3"
+    safe-buffer "5.2.1"
+    uid-safe "~2.1.5"
+
 express-validator@^7.0.1:
   version "7.0.1"
   resolved "https://registry.npmjs.org/express-validator/-/express-validator-7.0.1.tgz"
@@ -1702,7 +1741,7 @@ fs.realpath@^1.0.0:
 
 fsevents@^2.3.2, fsevents@~2.3.2:
   version "2.3.3"
-  resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-2.3.3.tgz#cac6407785d03675a2a5e1a5305c697b347d90d6"
+  resolved "https://registry.npmjs.org/fsevents/-/fsevents-2.3.3.tgz"
   integrity sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==
 
 function-bind@^1.1.2:
@@ -2933,6 +2972,11 @@ qs@6.11.0, qs@^6.11.0:
   dependencies:
     side-channel "^1.0.4"
 
+random-bytes@~1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/random-bytes/-/random-bytes-1.0.0.tgz"
+  integrity sha512-iv7LhNVO047HzYR3InF6pUcUsPQiHTM1Qal51DcGSuZFBil1aBBWG5eHPNek7bvILMaYJ/8RU1e8w1AMdHmLQQ==
+
 range-parser@~1.2.1:
   version "1.2.1"
   resolved "https://registry.npmjs.org/range-parser/-/range-parser-1.2.1.tgz"
@@ -3402,6 +3446,13 @@ typescript@^5.2.2:
   version "5.2.2"
   resolved "https://registry.npmjs.org/typescript/-/typescript-5.2.2.tgz"
   integrity sha512-mI4WrpHsbCIcwT9cF4FZvr80QUeKvsUsUvKDoR+X/7XHQH98xYD8YHZg7ANtz2GtZt/CBq2QJ0thkGJMHfqc1w==
+
+uid-safe@~2.1.5:
+  version "2.1.5"
+  resolved "https://registry.npmjs.org/uid-safe/-/uid-safe-2.1.5.tgz"
+  integrity sha512-KPHm4VL5dDXKz01UuEd88Df+KzynaohSL9fBh096KWAxSKZQDI2uBrVqtvRM4rwrIrRRKsdLNML/lnaaVSRioA==
+  dependencies:
+    random-bytes "~1.0.0"
 
 undefsafe@^2.0.5:
   version "2.0.5"
