@@ -11,10 +11,12 @@ import winston from 'winston';
 
 // Import middleware and utils
 import connectDB from './config/db';
-
 import { errorHandler } from './middleware/errorHandler';
 import notFound from './utils/notFound';
 import logger from './utils/logger';
+
+//routes import
+import authRoutes from './routes/authRoutes';
 
 //test env
 if (process.env.TEST_ENV !== 'test') {
@@ -32,7 +34,7 @@ app.use(compression()); // Compress response bodies
 
 app.use(express.json()); // Parse JSON bodies
 app.use(cors());
-app.use(morgan('combined')); // HTTP request logging
+app.use(morgan('tiny')); // HTTP request logging
 
 // If not in production, log to console too
 
@@ -49,6 +51,8 @@ app.get('/errorTest', (req: Request, res: Response) => {
   throw new Error('This is a test error');
 });
 //routes
+
+app.use('/api/v1/auth', authRoutes);
 
 // Handle 404
 app.use(notFound);
