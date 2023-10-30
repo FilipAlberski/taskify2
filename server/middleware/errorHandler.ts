@@ -13,7 +13,7 @@ export const errorHandler = (
   // Send a response to the client
   const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
   res.status(statusCode).json({
-    message: 'Something went wrong',
+    message: err.message.essa,
     error: process.env.NODE_ENV === 'development' ? err.message : {},
   });
 };

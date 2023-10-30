@@ -43,7 +43,11 @@ app.get('/testLogger', (req: Request, res: Response) => {
   logger.error('Error level log message');
   res.send('Hello from Express & TypeScript with enhancements!');
 });
+//error test
 
+app.get('/errorTest', (req: Request, res: Response) => {
+  throw new Error('This is a test error');
+});
 //routes
 
 // Handle 404
