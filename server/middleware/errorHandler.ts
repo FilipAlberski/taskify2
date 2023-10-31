@@ -7,13 +7,16 @@ export const errorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  // Log the error using winston logger
-  logger.error(`Error: ${err.message}, Stack: ${err.stack}`);
+  let statsuCode = res.statusCode === 200 ? 500 : res.statusCode;
+  let message = err.message;
 
-  // Send a response to the client
-  const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
-  res.status(statusCode).json({
-    message: err.message,
-    error: process.env.NODE_ENV === 'development' ? err.message : {},
+  if (err.name === 'castError' && err.kind === 'ObjectId') {
+    statsuCode = 404;
+    message = 'resource not found';
+  }
+
+  res.status(statsuCode).json({
+    message: message,
+    stack: process.env.NODE_ENV === 'production' ? null : err.stack,
   });
 };

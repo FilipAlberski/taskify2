@@ -16,7 +16,7 @@ import notFound from './utils/notFound';
 import logger from './utils/logger';
 
 //routes import
-import authRoutes from './routes/authRoutes';
+import authRoutes from './routes/userRoutes';
 
 //test env
 if (process.env.TEST_ENV !== 'test') {
