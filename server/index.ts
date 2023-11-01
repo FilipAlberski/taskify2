@@ -18,11 +18,12 @@ import logger from './utils/logger';
 //routes import
 import authRoutes from './routes/userRoutes';
 
+//connect to db
+connectDB();
+
 //test env
 if (process.env.TEST_ENV !== 'test') {
   logger.error('dotenv is not working');
-} else {
-  logger.info('dotenv is working');
 }
 
 // Initialize app
@@ -33,6 +34,7 @@ app.use(helmet()); // Set security-related HTTP headers
 app.use(compression()); // Compress response bodies
 
 app.use(express.json()); // Parse JSON bodies
+app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 app.use(cors());
 app.use(morgan('tiny')); // HTTP request logging
 
@@ -60,11 +62,8 @@ app.use(notFound);
 // Global error handler
 app.use(errorHandler);
 
-//connect to db
-connectDB();
-
 // Start the server
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
-  console.log(`Server started on port ${PORT}`);
+  logger.info(`Server running on port ${PORT}`);
 });
