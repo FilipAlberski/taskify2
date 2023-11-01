@@ -65,6 +65,7 @@ const register = asyncHandler(async (req: Request, res: Response) => {
 //*@route  POST /api/v1/auth/login
 //*@access Public
 
+//TODO: test this route
 const login = asyncHandler(async (req: Request, res: Response) => {
   const { userName, password, email } = req.body;
 
