@@ -22,8 +22,6 @@ interface IUser extends mongoose.Document {
 //*@access  Public
 
 const register = asyncHandler(async (req: Request, res: Response) => {
-  console.log(req.body);
-
   const { firstName, lastName, userName, email, password } = req.body;
 
   const userExist = await User.findOne({ email });
