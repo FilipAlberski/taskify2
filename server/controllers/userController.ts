@@ -7,6 +7,16 @@ import generateToken from '../utils/generateToken';
 
 import { Document } from 'mongoose';
 
+interface IUser extends mongoose.Document {
+  firstName: string;
+  lastName: string;
+  userName: string;
+  email: string;
+  password: string;
+  avatar: string;
+  matchPassword: (enteredPassword: string) => Promise<boolean>;
+}
+
 //*@desc    Register a new user
 //*@route   POST /api/v1/auth/register
 //*@access  Public
@@ -60,9 +70,9 @@ const register = asyncHandler(async (req: Request, res: Response) => {
 const login = asyncHandler(async (req: Request, res: Response) => {
   const { userName, password, email } = req.body;
 
-  const user = await User.findOne({
+  const user = (await User.findOne({
     $or: [{ userName: userName }, { email: email }],
-  });
+  })) as IUser;
 
   if (user && (await user.matchPassword(password))) {
     generateToken(res, user._id);
