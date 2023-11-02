@@ -17,6 +17,16 @@ interface IUser extends mongoose.Document {
   matchPassword: (enteredPassword: string) => Promise<boolean>;
 }
 
+interface RequestWithUser extends Request {
+  user: {
+    _id: mongoose.Types.ObjectId;
+    firstName: string;
+    lastName: string;
+    userName: string;
+    email: string;
+  };
+}
+
 //*@desc    Register a new user
 //*@route   POST /api/v1/auth/register
 //*@access  Public
@@ -110,9 +120,15 @@ const logout = asyncHandler(async (req: Request, res: Response) => {
 
 const getProfile = asyncHandler(
   async (req: Request, res: Response) => {
-    res.status(200).json({
-      message: 'get profile route',
-    });
+    const user = {
+      _id: (req as RequestWithUser).user._id,
+      firstName: (req as RequestWithUser).user.firstName,
+      lastName: (req as RequestWithUser).user.lastName,
+      userName: (req as RequestWithUser).user.userName,
+      email: (req as RequestWithUser).user.email,
+    };
+
+    res.status(200).json(user);
   }
 );
 
@@ -122,9 +138,29 @@ const getProfile = asyncHandler(
 
 const updateProfile = asyncHandler(
   async (req: Request, res: Response) => {
-    res.status(200).json({
-      message: 'update profile route',
-    });
+    const user = (await User.findById(
+      (req as RequestWithUser).user._id
+    )) as IUser;
+
+    if (user) {
+      user.firstName = req.body.firstName || user.firstName;
+      user.lastName = req.body.lastName || user.lastName;
+      user.userName = req.body.userName || user.userName;
+      user.email = req.body.email || user.email;
+
+      const updatedUser = await user.save();
+
+      res.status(200).json({
+        _id: updatedUser._id,
+        firstName: updatedUser.firstName,
+        lastName: updatedUser.lastName,
+        userName: updatedUser.userName,
+        email: updatedUser.email,
+      });
+    } else {
+      res.status(404);
+      throw new Error('User not found');
+    }
   }
 );
 
