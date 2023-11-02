@@ -68,6 +68,7 @@ const register = asyncHandler(async (req: Request, res: Response) => {
 //TODO: test this route
 const login = asyncHandler(async (req: Request, res: Response) => {
   const { userName, password, email } = req.body;
+  console.log(req.body);
 
   const user = (await User.findOne({
     $or: [{ userName: userName }, { email: email }],
@@ -93,8 +94,13 @@ const login = asyncHandler(async (req: Request, res: Response) => {
 //*@access Private
 
 const logout = asyncHandler(async (req: Request, res: Response) => {
+  res.cookie('jwt', '', {
+    httpOnly: true,
+    expires: new Date(0),
+  });
+
   res.status(200).json({
-    message: 'logout route',
+    message: 'user logged out',
   });
 });
 
