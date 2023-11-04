@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   useTheme,
   useMediaQuery,
@@ -10,33 +10,43 @@ import {
   List,
   ListItemButton,
   ListItemText,
-  Box,
+  styled,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-
 import { Outlet } from 'react-router-dom';
 
-const SharedLayout = () => {
+const drawerWidth = 250;
+
+const MainContent = styled('div')(({ theme, isMobile }) => ({
+  flexGrow: 1,
+  padding: theme.spacing(3),
+  marginLeft: isMobile ? 0 : drawerWidth,
+}));
+
+const SharedLayout: React.FC = () => {
   const theme = useTheme();
-  console.log(theme);
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const [openDrawer, setOpenDrawer] = React.useState(false);
+  const [openDrawer, setOpenDrawer] = useState(false);
 
-  const toggleDrawer = () => {
+  const toggleDrawer = useCallback(() => {
     setOpenDrawer(!openDrawer);
-  };
+  }, [openDrawer]);
 
-  const closeDrawer = () => {
+  const closeDrawer = useCallback(() => {
     setOpenDrawer(false);
-  };
+  }, []);
 
   return (
     <div>
       <AppBar position="static">
         <Toolbar
           sx={{
-            left: isMobile ? '0px' : '250px',
-            width: isMobile ? '100%' : 'calc(100% - 250px)',
+            left: isMobile ? '0px' : `${drawerWidth}px`,
+            width: isMobile
+              ? '100%'
+              : `calc(100% - ${drawerWidth}px)`,
+            display: 'flex',
+            justifyContent: 'space-between',
           }}
         >
           {isMobile && (
@@ -54,11 +64,12 @@ const SharedLayout = () => {
       <Drawer
         open={isMobile ? openDrawer : true}
         variant={isMobile ? 'temporary' : 'permanent'}
-        ModalProps={{
-          onBackdropClick: closeDrawer,
-        }}
+        onClose={closeDrawer}
         sx={{
+          width: drawerWidth,
           '& .MuiDrawer-paper': {
+            width: drawerWidth,
+            boxSizing: 'border-box',
             bgcolor: 'background.default',
           },
         }}
@@ -66,20 +77,21 @@ const SharedLayout = () => {
         <Typography variant="h4" sx={{ p: 2 }}>
           Taskify
         </Typography>
-
-        <List sx={{ width: 250 }}>
-          <ListItemButton>
-            <ListItemText primary="Option 1" onClick={closeDrawer} />
+        <List>
+          <ListItemButton onClick={closeDrawer}>
+            <ListItemText primary="Option 1" />
           </ListItemButton>
-          <ListItemButton>
+          <ListItemButton onClick={closeDrawer}>
             <ListItemText primary="Option 2" />
           </ListItemButton>
-          <ListItemButton>
+          <ListItemButton onClick={closeDrawer}>
             <ListItemText primary="Option 3" />
           </ListItemButton>
         </List>
       </Drawer>
-      <Outlet />
+      <MainContent isMobile={isMobile}>
+        <Outlet />
+      </MainContent>
     </div>
   );
 };
