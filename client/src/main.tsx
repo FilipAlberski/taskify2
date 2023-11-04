@@ -1,19 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
-import './index.css';
+
 import {
   createBrowserRouter,
   createRoutesFromElements,
   Route,
   RouterProvider,
 } from 'react-router-dom';
+import Header from './components/Header.tsx';
+import SharedLayout from './Pages/SharedLayout.tsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
       <Route path="/" element={<div>About</div>} />
-      <Route path="/contact" element={<div>Contact</div>} />
+      <Route path="/contact" element={<SharedLayout />}></Route>
     </Route>
   )
 );
