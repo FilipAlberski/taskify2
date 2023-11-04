@@ -10,6 +10,7 @@ import {
   List,
   ListItemButton,
   ListItemText,
+  Box,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 
@@ -62,7 +63,7 @@ const SharedLayout = () => {
           },
         }}
       >
-        <Typography variant="h6" sx={{ p: 2 }}>
+        <Typography variant="h4" sx={{ p: 2 }}>
           Taskify
         </Typography>
 
