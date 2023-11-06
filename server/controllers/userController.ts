@@ -3,7 +3,10 @@ import asyncHandler from 'express-async-handler';
 import { Request, Response } from 'express';
 import logger from '../utils/logger';
 import User from '../models/userModel';
-import generateToken from '../utils/generateToken';
+import {
+  generateRefreshToken,
+  generateAccessToken,
+} from '../utils/generateToken';
 
 import { Document } from 'mongoose';
 
@@ -57,7 +60,8 @@ const register = asyncHandler(async (req: Request, res: Response) => {
   });
 
   if (user) {
-    generateToken(res, user._id);
+    generateRefreshToken(res, user._id);
+    generateAccessToken(res, user._id);
     res.status(201).json({
       _id: user._id,
       firstName: user.firstName,
@@ -85,7 +89,8 @@ const login = asyncHandler(async (req: Request, res: Response) => {
   })) as IUser;
 
   if (user && (await user.matchPassword(password))) {
-    generateToken(res, user._id);
+    generateRefreshToken(res, user._id);
+    generateAccessToken(res, user._id);
     res.status(200).json({
       _id: user._id,
       firstName: user.firstName,

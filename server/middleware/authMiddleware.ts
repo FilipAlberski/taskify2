@@ -21,10 +21,12 @@ const protectRoute = asyncHandler(
           process.env.JWT_SECRET!
         ) as JwtPayload;
 
+        console.log('decoded: ', decoded);
         (req as RequestWithUser).user = await User.findById(
           decoded.userId
         ).select('-password');
 
+        console.log('req.user: ', (req as RequestWithUser).user);
         next();
       } catch (error) {
         res.status(401);

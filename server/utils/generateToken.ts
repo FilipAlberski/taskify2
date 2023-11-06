@@ -5,7 +5,7 @@ if (!process.env.JWT_SECRET) {
   throw new Error('JWT_SECRET is not set in environment variables.');
 }
 
-const generateToken = (res: any, userId: object) => {
+const generateRefreshToken = (res: any, userId: object) => {
   const rememberMe = res.req.body.rememberMe ? true : false;
 
   console.log('rememberMe: ', rememberMe);
@@ -18,7 +18,7 @@ const generateToken = (res: any, userId: object) => {
     expiresIn: howLong,
   });
 
-  res.cookie('jwt', token, {
+  res.cookie('refreshToken', token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
@@ -26,4 +26,17 @@ const generateToken = (res: any, userId: object) => {
   });
 };
 
-export default generateToken;
+const generateAccessToken = (res: any, userId: object) => {
+  const token = jwt.sign({ userId }, process.env.JWT_SECRET!, {
+    expiresIn: '15s',
+  });
+
+  res.cookie('accessToken', token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
+    maxAge: 15000,
+  });
+};
+
+export { generateRefreshToken, generateAccessToken };
