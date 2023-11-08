@@ -12,7 +12,7 @@ interface RequestWithUser extends Request {
 const protectRoute = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     let token;
-    token = (req as RequestWithUser).cookies.jwt;
+    token = (req as RequestWithUser).cookies.refreshToken;
 
     if (token) {
       try {

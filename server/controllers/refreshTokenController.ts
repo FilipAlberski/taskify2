@@ -23,29 +23,49 @@ interface RequestWithUser extends Request {
 
 const refreshToken = asyncHandler(
   async (req: Request, res: Response) => {
-    const { refreshToken } = req.cookies;
+    const cookies = req.cookies;
 
-    if (!refreshToken) {
+    if (!cookies.refreshToken) {
       res.status(401);
-      throw new Error('Not authorized, no token');
+      throw new Error('Not authorized, no token, login again');
+    }
+    const refreshToken = cookies.refreshToken;
+
+    res.clearCookie('accessToken');
+
+    const decoded = jwt.verify(
+      refreshToken,
+      process.env.JWT_SECRET!
+    ) as JwtPayload;
+
+    const user = await User.findById(decoded.userId).exec();
+
+    if (!user) {
+      res.status(401);
+      throw new Error('Not authorized, no user found');
     }
 
-    try {
-      const decoded = jwt.verify(
-        refreshToken,
-        process.env.JWT_SECRET!
-      ) as JwtPayload;
+    jwt.verify(
+      refreshToken,
+      process.env.JWT_SECRET!,
+      (err: any, user: any) => {
+        if (err) {
+          res.status(401);
+          throw new Error('Not authorized, token failed');
+        }
 
-      console.log('decoded: ', decoded);
-      (req as RequestWithUser).user = await User.findById(
-        decoded.userId
-      ).select('-password');
+        generateAccessToken(res, user);
+      }
+    );
 
-      console.log('req.user: ', (req as RequestWithUser).user);
-      next();
-    } catch (error) {
-      res.status(401);
-      throw new Error('Not authorized, token failed');
-    }
+    res.status(200).json({
+      _id: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      userName: user.userName,
+      email: user.email,
+    });
   }
 );
+
+export { refreshToken };
