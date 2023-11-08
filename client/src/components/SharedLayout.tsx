@@ -50,14 +50,17 @@ const SharedLayout: React.FC = () => {
           }}
         >
           {isMobile && (
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              onClick={toggleDrawer}
-            >
-              <MenuIcon />
-            </IconButton>
+            <>
+              <IconButton
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                onClick={toggleDrawer}
+              >
+                <MenuIcon />
+              </IconButton>
+              Taskify
+            </>
           )}
         </Toolbar>
       </AppBar>

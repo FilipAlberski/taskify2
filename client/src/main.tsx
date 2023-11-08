@@ -25,7 +25,7 @@ const router = createBrowserRouter(
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
-      <Route path="/contact" element={<SharedLayout />}></Route>
+      <Route path="/dashboard" element={<SharedLayout />}></Route>
       <Route path="*" element={<NotFoundPage />} />
     </Route>
   )
