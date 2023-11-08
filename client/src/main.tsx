@@ -17,7 +17,7 @@ import LoginPage from './Pages/LoginPage.tsx';
 import RegisterPage from './Pages/RegisterPage.tsx';
 //redux
 import { Provider } from 'react-redux';
-import store from './redux/store.ts';
+import store from './store.ts';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
