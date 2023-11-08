@@ -13,6 +13,7 @@ import {
   styled,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import CloseIcon from '@mui/icons-material/Close'; // Import Close icon
 import { Outlet } from 'react-router-dom';
 
 const drawerWidth = 250;
@@ -49,19 +50,18 @@ const SharedLayout: React.FC = () => {
             justifyContent: 'space-between',
           }}
         >
-          {isMobile && (
-            <>
-              <IconButton
-                edge="start"
-                color="inherit"
-                aria-label="menu"
-                onClick={toggleDrawer}
-              >
-                <MenuIcon />
-              </IconButton>
-              Taskify
-            </>
-          )}
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            onClick={toggleDrawer}
+          >
+            {openDrawer ? <CloseIcon /> : <MenuIcon />}{' '}
+            {/* Toggle between icons */}
+          </IconButton>
+          <Typography variant="h6" noWrap component="div">
+            Taskify
+          </Typography>
         </Toolbar>
       </AppBar>
       <Drawer
