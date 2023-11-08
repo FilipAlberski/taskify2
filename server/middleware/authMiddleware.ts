@@ -21,7 +21,6 @@ const protectRoute = asyncHandler(
           process.env.JWT_SECRET!
         ) as JwtPayload;
 
-        console.log('decoded: ', decoded);
         (req as RequestWithUser).user = await User.findById(
           decoded.userId
         ).select('-password');
