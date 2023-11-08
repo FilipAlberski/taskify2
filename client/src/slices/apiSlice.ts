@@ -1,16 +1,14 @@
 import {
-  createApi,
   fetchBaseQuery,
+  createApi,
 } from '@reduxjs/toolkit/query/react';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: 'http://localhost:8080/api/v1',
 });
 
-const apiSlice = createApi({
-  baseQuery: baseQuery,
-
+export const apiSlice = createApi({
+  baseQuery,
+  tagTypes: ['User'],
   endpoints: (builder) => ({}),
 });
-
-export default apiSlice;

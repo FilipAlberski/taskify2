@@ -78,12 +78,10 @@ const register = asyncHandler(async (req: Request, res: Response) => {
 
 //TODO: test this route
 const login = asyncHandler(async (req: Request, res: Response) => {
-  const { userName, password, email } = req.body;
+  const { password, email } = req.body;
   console.log(req.body);
 
-  const user = (await User.findOne({
-    $or: [{ userName: userName }, { email: email }],
-  })) as IUser;
+  const user = (await User.findOne({ email })) as IUser;
 
   if (user && (await user.matchPassword(password))) {
     generateRefreshToken(res, user._id);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -10,15 +10,41 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { Typography } from '@mui/material';
 import Container from '@mui/material/Container';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { useLoginMutation } from '../slices/usersApiSlice';
+import { setCredentials } from '../slices/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [login, { isLoading }] = useLoginMutation();
+
+  const { userInfo } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (userInfo) {
+      navigate('/dashboard');
+    }
+  }, [userInfo, navigate]);
+
+  const handleSubmit = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const email = data.get('email') as string;
+    const password = data.get('password') as string;
+
+    try {
+      const res = await login({ email, password }).unwrap();
+      dispatch(setCredentials({ ...res }));
+      navigate('/');
+    } catch (err) {
+      console.log(err.data.message);
+    }
   };
 
   return (
@@ -48,7 +74,7 @@ const LoginPage = () => {
             required
             fullWidth
             id="email"
-            label="Email Address"
+            label="Email Address or Username"
             name="email"
             autoComplete="email"
             autoFocus
