@@ -3,7 +3,7 @@ import asyncHandler from 'express-async-handler';
 import { Request, Response } from 'express';
 import logger from '../utils/logger';
 import User from '../models/userModel';
-import { generateRefreshToken } from '../utils/generateToken';
+import generateToken from '../utils/generateToken';
 import jwt from 'jsonwebtoken';
 
 import { Document } from 'mongoose';
@@ -58,7 +58,7 @@ const register = asyncHandler(async (req: Request, res: Response) => {
   });
 
   if (user) {
-    generateRefreshToken(res, user._id);
+    generateToken(res, user._id);
 
     res.status(201).json({
       _id: user._id,
@@ -84,7 +84,7 @@ const login = asyncHandler(async (req: Request, res: Response) => {
   const user = (await User.findOne({ email })) as IUser;
 
   if (user && (await user.matchPassword(password))) {
-    generateRefreshToken(res, user._id);
+    generateToken(res, user._id);
 
     res.status(200).json({
       _id: user._id,
