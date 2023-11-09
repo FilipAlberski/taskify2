@@ -20,8 +20,8 @@ const generateRefreshToken = (res: any, userId: object) => {
 
   res.cookie('refreshToken', token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
+    secure: false,
+    sameSite: 'lax',
     maxAge: maxAge,
   });
 };

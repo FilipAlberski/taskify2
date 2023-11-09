@@ -105,8 +105,9 @@ const login = asyncHandler(async (req: Request, res: Response) => {
 
 const checkAuth = asyncHandler(
   async (req: Request, res: Response) => {
-    const { refreshToken } = req.cookies;
+    const refreshToken = req.cookies.refreshToken;
 
+    console.log('cookies: ', req.cookies);
     if (!refreshToken) {
       res.status(401);
       throw new Error('Not authorized, no token');
