@@ -138,7 +138,7 @@ const checkAuth = asyncHandler(
 //*@access Private
 
 const logout = asyncHandler(async (req: Request, res: Response) => {
-  res.cookie('jwt', '', {
+  res.cookie('refreshToken', '', {
     httpOnly: true,
     expires: new Date(0),
   });
