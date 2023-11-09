@@ -8,6 +8,7 @@ import { useCheckAuthQuery } from './slices/usersApiSlice.js';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from './slices/authSlice.js';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 //TODO create redux store and get the theme from there
 const uiTheme = 'dark';

@@ -8,8 +8,7 @@ if (!process.env.JWT_SECRET) {
 const generateToken = (res: any, userId: object) => {
   const rememberMe = res.req.body.rememberMe ? true : false;
 
-  console.log('rememberMe: ', rememberMe);
-  const howLong = rememberMe ? '30d' : '1d';
+  const howLong = !rememberMe ? '30d' : '1d';
   const maxAge = rememberMe
     ? 1000 * 60 * 60 * 24 * 30
     : 1000 * 60 * 60 * 24;
@@ -20,9 +19,8 @@ const generateToken = (res: any, userId: object) => {
 
   res.cookie('refreshToken', token, {
     httpOnly: true,
-    secure: false,
-    sameSite: 'lax',
     maxAge: maxAge,
+    secure: process.env.NODE_ENV === 'production' ? true : false,
   });
 };
 

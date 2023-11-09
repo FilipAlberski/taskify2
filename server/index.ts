@@ -36,7 +36,12 @@ app.use(compression()); // Compress response bodies
 
 app.use(express.json()); // Parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
-app.use(cors());
+app.use(
+  cors({
+    origin: 'http://localhost:5173',
+    credentials: true,
+  })
+);
 app.use(cookieParser());
 app.use(morgan('tiny')); // HTTP request logging
 

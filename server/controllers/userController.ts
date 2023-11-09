@@ -79,7 +79,6 @@ const register = asyncHandler(async (req: Request, res: Response) => {
 
 const login = asyncHandler(async (req: Request, res: Response) => {
   const { password, email } = req.body;
-  console.log(req.body);
 
   const user = (await User.findOne({ email })) as IUser;
 
@@ -107,7 +106,6 @@ const checkAuth = asyncHandler(
   async (req: Request, res: Response) => {
     const refreshToken = req.cookies.refreshToken;
 
-    console.log('cookies: ', req.cookies);
     if (!refreshToken) {
       res.status(401);
       throw new Error('Not authorized, no token');
@@ -140,7 +138,7 @@ const checkAuth = asyncHandler(
 //*@access Private
 
 const logout = asyncHandler(async (req: Request, res: Response) => {
-  res.cookie('refreshToken', '', {
+  res.cookie('jwt', '', {
     httpOnly: true,
     expires: new Date(0),
   });

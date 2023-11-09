@@ -17,8 +17,6 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         url: `${USERS_URL}/checkAuth`,
         method: 'GET',
       }),
-
-      providesTags: ['Auth'],
     }),
     logout: builder.mutation({
       query: () => ({

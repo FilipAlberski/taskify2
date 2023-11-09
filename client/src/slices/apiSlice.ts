@@ -5,6 +5,7 @@ import {
 
 const baseQuery = fetchBaseQuery({
   baseUrl: 'http://localhost:8080/api/v1',
+  credentials: 'include',
 });
 
 export const apiSlice = createApi({
