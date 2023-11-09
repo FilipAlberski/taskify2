@@ -4,6 +4,7 @@ import { Request, Response } from 'express';
 import logger from '../utils/logger';
 import User from '../models/userModel';
 import { generateRefreshToken } from '../utils/generateToken';
+import jwt from 'jsonwebtoken';
 
 import { Document } from 'mongoose';
 
@@ -76,7 +77,6 @@ const register = asyncHandler(async (req: Request, res: Response) => {
 //*@route  POST /api/v1/auth/login
 //*@access Public
 
-//TODO: test this route
 const login = asyncHandler(async (req: Request, res: Response) => {
   const { password, email } = req.body;
   console.log(req.body);
@@ -98,6 +98,41 @@ const login = asyncHandler(async (req: Request, res: Response) => {
     throw new Error('Invalid user name or password');
   }
 });
+
+//*@desc   Auth user using cookie
+//*@route  GET /api/v1/auth/cookie
+//*@access Public
+
+const checkAuth = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { refreshToken } = req.cookies;
+
+    if (!refreshToken) {
+      res.status(401);
+      throw new Error('Not authorized, no token');
+    }
+
+    const decoded = jwt.verify(
+      refreshToken,
+      process.env.JWT_SECRET!
+    ) as jwt.JwtPayload;
+
+    const user = (await User.findById(decoded.userId)) as IUser;
+
+    if (!user) {
+      res.status(401);
+      throw new Error('Not authorized, no user');
+    }
+
+    res.status(201).json({
+      _id: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      userName: user.userName,
+      email: user.email,
+    });
+  }
+);
 
 //*@desc   Logout user
 //*@route  GET /api/v1/auth/logout
@@ -164,4 +199,11 @@ const updateProfile = asyncHandler(
   }
 );
 
-export { register, login, logout, getProfile, updateProfile };
+export {
+  register,
+  login,
+  logout,
+  getProfile,
+  updateProfile,
+  checkAuth,
+};

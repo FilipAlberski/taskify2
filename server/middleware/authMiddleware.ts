@@ -25,7 +25,6 @@ const protectRoute = asyncHandler(
           decoded.userId
         ).select('-password');
 
-        console.log('req.user: ', (req as RequestWithUser).user);
         next();
       } catch (error) {
         res.status(401);
