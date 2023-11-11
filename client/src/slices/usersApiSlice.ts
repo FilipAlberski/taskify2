@@ -10,6 +10,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body: credentials,
       }),
+      invalidatesTags: ['User'],
     }),
 
     checkAuth: builder.query({
@@ -23,6 +24,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         url: `${USERS_URL}/logout`,
         method: 'POST',
       }),
+      invalidatesTags: ['User'],
     }),
   }),
 });

@@ -15,6 +15,9 @@ import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
 //redux
 import { useSelector } from 'react-redux';
@@ -35,7 +38,16 @@ export default function SharedLayout(props: Props) {
 
   const { userInfo } = useSelector((state) => state.auth);
 
-  console.log(userInfo);
+  // user dropdown menu
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClickUserDropdown = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseUserDropdown = () => {
+    setAnchorEl(null);
+  };
 
   const drawer = (
     <Box
@@ -50,69 +62,107 @@ export default function SharedLayout(props: Props) {
           Taskify
         </Typography>
       </Toolbar>
-      <Divider />
-      <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map(
-          (text, index) => (
-            <ListItem key={text} disablePadding>
+      <Box
+        sx={{
+          overflowY: 'auto',
+          marginBottom: '64px',
+        }}
+      >
+        <Divider />
+        <List>
+          {['Inbox', 'Starred', 'Send email', 'Drafts'].map(
+            (text, index) => (
+              <ListItem key={text} disablePadding>
+                <ListItemButton>
+                  <ListItemIcon>
+                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  </ListItemIcon>
+                  <ListItemText primary={text} />
+                </ListItemButton>
+              </ListItem>
+            )
+          )}
+        </List>
+        <Divider />
+        <List>
+          {[
+            'All mail',
+            'Trash',
+            'Spam',
+            'Trash',
+            'Spam',
+            'Trash',
+            'Spam',
+            'Trash',
+            'Spam',
+            'Trash',
+            'Spam',
+            'Trash',
+            'Spam',
+            'Trash',
+            'Spam',
+            'Trash',
+            'Spam',
+            'Trash',
+            'Spam',
+          ].map((text, index) => (
+            <ListItem key={index} disablePadding>
               <ListItemButton>
-                <ListItemIcon>
+                <ListItemIcon onClick={handleDrawerToggle}>
                   {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
                 </ListItemIcon>
                 <ListItemText primary={text} />
               </ListItemButton>
             </ListItem>
-          )
-        )}
-      </List>
-      <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon onClick={handleDrawerToggle}>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+          ))}
+        </List>
+      </Box>
       <Box
         sx={{
-          justifySelf: 'flex-end',
+          padding: '16px',
+          position: 'fixed',
+          bottom: 0,
+          width: 'inherit',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between', // This will space out the name/email and the menu icon
         }}
       >
         {userInfo ? (
-          <List>
-            <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon>
-                <ListItemText primary="Logout" />
-              </ListItemButton>
-            </ListItem>
-          </List>
+          <React.Fragment>
+            <Typography variant="subtitle1">
+              {userInfo.firstName} {userInfo.lastName}
+            </Typography>
+          </React.Fragment>
         ) : (
-          <List>
-            <ListItem disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon>
-                <ListItemText primary="Login" />
-              </ListItemButton>
-            </ListItem>
-          </List>
+          <Typography variant="subtitle2">
+            No user info available
+          </Typography>
         )}
+        <IconButton
+          aria-label="more"
+          aria-controls="long-menu"
+          aria-haspopup="true"
+          onClick={handleClickUserDropdown}
+        >
+          <MoreVertIcon />
+        </IconButton>
+        <Menu
+          id="long-menu"
+          anchorEl={anchorEl}
+          keepMounted
+          open={open}
+          onClose={handleCloseUserDropdown}
+        >
+          {['Profile', 'Settings', 'Logout'].map((option) => (
+            <MenuItem key={option} onClick={handleCloseUserDropdown}>
+              {option}
+            </MenuItem>
+          ))}
+        </Menu>
       </Box>
     </Box>
   );
-
-  // Remove this const when copying and pasting into your project.
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -143,7 +193,6 @@ export default function SharedLayout(props: Props) {
       >
         {/* Side Bar */}
         <Drawer
-          container={container}
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
