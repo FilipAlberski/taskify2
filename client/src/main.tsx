@@ -10,6 +10,8 @@ import {
 } from 'react-router-dom';
 //shared layout
 import SharedLayout from './components/SharedLayout.tsx';
+//protected route
+import ProtectedRoute from './Pages/ProtectedRoute.tsx';
 //pages
 import HomePage from './Pages/HomePage.tsx';
 import NotFoundPage from './Pages/NotFoundPage.tsx';
@@ -25,7 +27,9 @@ const router = createBrowserRouter(
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
-      <Route path="/dashboard" element={<SharedLayout />}></Route>
+      <Route element={<ProtectedRoute />}>
+        <Route path="/dashboard" element={<SharedLayout />}></Route>
+      </Route>
       <Route path="*" element={<NotFoundPage />} />
     </Route>
   )
