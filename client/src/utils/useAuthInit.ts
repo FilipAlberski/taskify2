@@ -1,18 +1,18 @@
-// useAuthInitializer.js
+// useAuthInit.js
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { useCheckAuthQuery } from '../slices/usersApiSlice'; // import your query hook
-import { setCredentials } from '../slices/authSlice'; // import your action creator
+import { useCheckAuthQuery } from '../slices/usersApiSlice';
+import { setCredentials } from '../slices/authSlice';
 
-const useAuthInit = () => {
+const useAuthInit = async () => {
   const dispatch = useDispatch();
   const { data } = useCheckAuthQuery();
 
   useEffect(() => {
     if (data) {
-      dispatch(setCredentials({ ...data }));
+      dispatch(setCredentials(data));
     }
-  }, [data, dispatch]);
+  }, [dispatch, data]);
 };
 
 export default useAuthInit;
