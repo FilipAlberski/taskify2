@@ -18,6 +18,7 @@ import logger from './utils/logger';
 
 //routes import
 import authRoutes from './routes/userRoutes';
+import projectRoutes from './routes/projectRoutes';
 
 //connect to db
 connectDB();
@@ -62,6 +63,7 @@ app.get('/errorTest', (req: Request, res: Response) => {
 //routes
 
 app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/projects', projectRoutes);
 
 // Handle 404
 app.use(notFound);

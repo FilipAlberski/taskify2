@@ -64,3 +64,7 @@ const projectSchema = new mongoose.Schema({
     ref: 'User',
   },
 });
+
+const Project = mongoose.model('Project', projectSchema);
+
+export default Project;
