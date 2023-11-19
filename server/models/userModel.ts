@@ -29,6 +29,19 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: 'https://via.placeholder.com/150',
     },
+    deletedAt: {
+      type: Date,
+      default: null,
+    },
+    deleted: {
+      type: Boolean,
+      default: false,
+    },
+    role: {
+      type: String,
+      enum: ['admin', 'user'],
+      default: 'user',
+    },
   },
   {
     timestamps: true,
