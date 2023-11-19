@@ -39,6 +39,15 @@ const projectSchema = new mongoose.Schema({
     },
   ],
 
+  //people who can add members to the project
+
+  admins: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+    },
+  ],
+
   createdAt: {
     type: Date,
     default: Date.now,

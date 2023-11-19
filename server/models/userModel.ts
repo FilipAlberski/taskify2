@@ -42,20 +42,6 @@ const userSchema = new mongoose.Schema(
       enum: ['user', 'admin'],
       default: 'user',
     },
-    projectPermissions: [
-      {
-        project: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'Project',
-        },
-        permissions: [
-          {
-            type: String,
-            enum: ['owner', 'admin', 'member'],
-          },
-        ],
-      },
-    ],
   },
   {
     timestamps: true,
