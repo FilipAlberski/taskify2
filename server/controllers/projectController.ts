@@ -73,3 +73,61 @@ export const getProjectById = asyncHandler(
     }
   }
 );
+
+// @desc    Update project
+// @route   PUT /api/v1/projects/:id
+// @access  Private
+
+export const updateProject = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { name, description, shortName, admin, members } = req.body;
+
+    const project = await Project.findById(req.params.id);
+
+    if (project) {
+      project.name = name;
+      project.description = description;
+      project.shortName = shortName;
+      project.admins = [admin];
+      project.members = [admin, ...members];
+
+      const updatedProject = await project.save();
+
+      if (updatedProject) {
+        res.status(200).json(updatedProject);
+      } else {
+        res.status(400);
+        throw new Error('Invalid project data');
+      }
+    } else {
+      res.status(404);
+      throw new Error('Project not found');
+    }
+  }
+);
+
+// @desc    Delete project
+// @route   DELETE /api/v1/projects/:id
+// @access  Private
+
+export const deleteProject = asyncHandler(
+  async (req: Request, res: Response) => {
+    const project = await Project.findById(req.params.id);
+
+    if (project) {
+      project.deleted = true;
+
+      const updatedProject = await project.save();
+
+      if (updatedProject) {
+        res.status(200).json(updatedProject);
+      } else {
+        res.status(400);
+        throw new Error('Invalid project data');
+      }
+    } else {
+      res.status(404);
+      throw new Error('Project not found');
+    }
+  }
+);
