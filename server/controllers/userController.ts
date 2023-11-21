@@ -15,7 +15,7 @@ interface IUser extends mongoose.Document {
   email: string;
   password: string;
   avatar: string;
-  roles: string[];
+  roles: string;
   matchPassword: (enteredPassword: string) => Promise<boolean>;
 }
 

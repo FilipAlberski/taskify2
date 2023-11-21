@@ -6,7 +6,7 @@ import mongoose from 'mongoose';
 import { Request, Response } from 'express';
 
 interface UserWithThings extends mongoose.Document {
-  roles: string[];
+  roles: string;
 }
 
 interface RequestWithUser extends Request {
@@ -32,7 +32,7 @@ export const getProjects = asyncHandler(
 
 export const createProject = asyncHandler(
   async (req: Request, res: Response) => {
-    if ((req as RequestWithUser).user.role !== 'admin') {
+    if (!(req as RequestWithUser).user.roles.includes('admin')) {
       throw new Error('Not authorized');
     }
 
@@ -81,6 +81,11 @@ export const createProject = asyncHandler(
 export const getProjectById = asyncHandler(
   async (req: Request, res: Response) => {
     const project = await Project.findById(req.params.id);
+
+    if (!project) {
+      res.status(404);
+      throw new Error('Project not found');
+    }
 
     if (
       project?.members.includes((req as RequestWithUser).user._id)
