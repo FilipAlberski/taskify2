@@ -15,6 +15,7 @@ interface IUser extends mongoose.Document {
   email: string;
   password: string;
   avatar: string;
+  roles: string[];
   matchPassword: (enteredPassword: string) => Promise<boolean>;
 }
 
@@ -25,6 +26,7 @@ interface RequestWithUser extends Request {
     lastName: string;
     userName: string;
     email: string;
+    roles: string[];
   };
 }
 
@@ -198,6 +200,31 @@ const updateProfile = asyncHandler(
   }
 );
 
+const getAllUsers = asyncHandler(
+  async (req: Request, res: Response) => {
+    if (!(req as RequestWithUser).user.roles.includes('admin')) {
+      res.status(401);
+      throw new Error('Not authorized');
+    }
+
+    const users = await User.find({});
+
+    res.status(200).json(users);
+  }
+);
+
+const changeUserRole = asyncHandler(
+  async (req: Request, res: Response) => {
+    // user has roles: ['user', 'admin'] and can change role to 'user' or 'admin'
+    if (!(req as RequestWithUser).user.roles.includes('admin')) {
+      res.status(401);
+      throw new Error('Not authorized');
+    }
+
+    const user = (await User.findById(req.params.id)) as IUser;
+  }
+);
+
 export {
   register,
   login,
@@ -205,4 +232,6 @@ export {
   getProfile,
   updateProfile,
   checkAuth,
+  getAllUsers,
+  changeUserRole,
 };

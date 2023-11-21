@@ -6,7 +6,7 @@ import mongoose from 'mongoose';
 import { Request, Response } from 'express';
 
 interface UserWithThings extends mongoose.Document {
-  role: string;
+  roles: string[];
 }
 
 interface RequestWithUser extends Request {
