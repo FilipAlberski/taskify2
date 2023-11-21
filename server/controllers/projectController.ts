@@ -5,8 +5,12 @@ import mongoose from 'mongoose';
 
 import { Request, Response } from 'express';
 
+interface UserWithThings extends mongoose.Document {
+  role: string;
+}
+
 interface RequestWithUser extends Request {
-  user: mongoose.Document;
+  user: UserWithThings;
 }
 
 //(req as RequestWithUser).user
@@ -28,6 +32,26 @@ export const getProjects = asyncHandler(
 
 export const createProject = asyncHandler(
   async (req: Request, res: Response) => {
+    if ((req as RequestWithUser).user.role !== 'admin') {
+      throw new Error('Not authorized');
+    }
+
+    if (!req.body.admin) {
+      throw new Error('No admin provided');
+    }
+    if (!req.body.members) {
+      throw new Error('No members provided');
+    }
+    if (!req.body.name) {
+      throw new Error('No name provided');
+    }
+    if (!req.body.description) {
+      throw new Error('No description provided');
+    }
+    if (!req.body.shortName) {
+      throw new Error('No shortName provided');
+    }
+
     const { name, description, shortName, admin, members } = req.body;
 
     const project = new Project({
