@@ -6,20 +6,18 @@ import mongoose from 'mongoose';
 import { Request, Response } from 'express';
 
 interface UserWithThings extends mongoose.Document {
-  roles: string;
+  role: string;
 }
 
 interface RequestWithUser extends Request {
   user: UserWithThings;
 }
 
-//(req as RequestWithUser).user
-
 // @desc    Get all projects
 // @route   GET /api/v1/projects
 // @access  Private
 
-export const getProjects = asyncHandler(
+const getProjects = asyncHandler(
   async (req: Request, res: Response) => {
     const projects = await Project.find({ deleted: false });
     res.status(200).json(projects);
@@ -30,9 +28,9 @@ export const getProjects = asyncHandler(
 // @route   POST /api/v1/projects
 // @access  Private
 
-export const createProject = asyncHandler(
+const createProject = asyncHandler(
   async (req: Request, res: Response) => {
-    if (!(req as RequestWithUser).user.roles.includes('admin')) {
+    if (!(req as RequestWithUser).user.role.includes('admin')) {
       throw new Error('Not authorized');
     }
 
@@ -59,8 +57,8 @@ export const createProject = asyncHandler(
       description,
       shortName,
       creator: (req as RequestWithUser).user._id,
-      admins: [admin],
-      members: [admin, ...members],
+      admins: [admin] || [],
+      members: [admin, ...members] || [],
     });
 
     const createdProject = await project.save();
@@ -78,7 +76,7 @@ export const createProject = asyncHandler(
 // @route   GET /api/v1/projects/:id
 // @access  Private
 
-export const getProjectById = asyncHandler(
+const getProjectById = asyncHandler(
   async (req: Request, res: Response) => {
     const project = await Project.findById(req.params.id);
 
@@ -107,7 +105,7 @@ export const getProjectById = asyncHandler(
 // @route   PUT /api/v1/projects/:id
 // @access  Private
 
-export const updateProject = asyncHandler(
+const updateProject = asyncHandler(
   async (req: Request, res: Response) => {
     const { name, description, shortName, admin, members } = req.body;
 
@@ -139,7 +137,7 @@ export const updateProject = asyncHandler(
 // @route   DELETE /api/v1/projects/:id
 // @access  Private
 
-export const deleteProject = asyncHandler(
+const deleteProject = asyncHandler(
   async (req: Request, res: Response) => {
     const project = await Project.findById(req.params.id);
 
@@ -160,3 +158,11 @@ export const deleteProject = asyncHandler(
     }
   }
 );
+
+export {
+  getProjects,
+  createProject,
+  getProjectById,
+  updateProject,
+  deleteProject,
+};
