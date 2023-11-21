@@ -9,6 +9,7 @@ import compression from 'compression';
 import morgan from 'morgan';
 import winston from 'winston';
 import cookieParser from 'cookie-parser';
+import firstStart from './utils/firstStart';
 
 // Import middleware and utils
 import connectDB from './config/db';
@@ -21,7 +22,10 @@ import authRoutes from './routes/userRoutes';
 import projectRoutes from './routes/projectRoutes';
 
 //connect to db
-connectDB();
+connectDB().then(() => {
+  logger.info('DB connected');
+  firstStart();
+});
 
 //test env
 if (process.env.TEST_ENV !== 'test') {

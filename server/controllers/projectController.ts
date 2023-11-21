@@ -13,6 +13,16 @@ interface RequestWithUser extends Request {
   user: UserWithThings;
 }
 
+interface ProjectWithThings extends mongoose.Document {
+  name: string;
+  description: string;
+  shortName: string;
+  creator: mongoose.Types.ObjectId;
+  admins: mongoose.Types.ObjectId[];
+  members: mongoose.Types.ObjectId[];
+  deleted: boolean;
+}
+
 // @desc    Get all projects
 // @route   GET /api/v1/projects
 // @access  Private
@@ -20,7 +30,20 @@ interface RequestWithUser extends Request {
 const getProjects = asyncHandler(
   async (req: Request, res: Response) => {
     const projects = await Project.find({ deleted: false });
-    res.status(200).json(projects);
+
+    res.status(200).json(
+      projects.map((project) => {
+        const typedProject = project as ProjectWithThings;
+        return {
+          _id: typedProject._id,
+          name: typedProject.name,
+          description: typedProject.description,
+          shortName: typedProject.shortName,
+          creator: typedProject.creator,
+          deleted: typedProject.deleted,
+        };
+      })
+    );
   }
 );
 
@@ -89,7 +112,14 @@ const getProjectById = asyncHandler(
       project?.members.includes((req as RequestWithUser).user._id)
     ) {
       if (project) {
-        res.status(200).json(project);
+        res.status(200).json({
+          _id: project._id,
+          name: project.name,
+          description: project.description,
+          shortName: project.shortName,
+          creator: project.creator,
+          deleted: project.deleted,
+        });
       } else {
         res.status(404);
         throw new Error('Project not found');
