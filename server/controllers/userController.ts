@@ -215,13 +215,30 @@ const getAllUsers = asyncHandler(
 
 const changeUserRole = asyncHandler(
   async (req: Request, res: Response) => {
-    // user has roles: ['user', 'admin'] and can change role to 'user' or 'admin'
-    if (!(req as RequestWithUser).user.roles.includes('admin')) {
+    if ((req as RequestWithUser).user.roles.includes('admin')) {
       res.status(401);
       throw new Error('Not authorized');
     }
 
     const user = (await User.findById(req.params.id)) as IUser;
+
+    if (user) {
+      user.roles = req.body.roles || user.roles;
+
+      const updatedUser = await user.save();
+
+      res.status(200).json({
+        _id: updatedUser._id,
+        firstName: updatedUser.firstName,
+        lastName: updatedUser.lastName,
+        userName: updatedUser.userName,
+        email: updatedUser.email,
+        roles: updatedUser.roles,
+      });
+    } else {
+      res.status(404);
+      throw new Error('User not found');
+    }
   }
 );
 
