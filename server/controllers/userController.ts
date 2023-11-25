@@ -80,9 +80,9 @@ const register = asyncHandler(async (req: Request, res: Response) => {
 //*@access Public
 
 const login = asyncHandler(async (req: Request, res: Response) => {
-  const { password, email } = req.body;
+  const { password, userName } = req.body;
 
-  const user = (await User.findOne({ email })) as IUser;
+  const user = (await User.findOne({ userName })) as IUser;
 
   if (user && (await user.matchPassword(password))) {
     generateToken(res, user._id);

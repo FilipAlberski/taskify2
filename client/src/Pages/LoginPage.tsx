@@ -35,11 +35,11 @@ const LoginPage = () => {
   ) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const email = data.get('email') as string;
+    const email = data.get('userName') as string;
     const password = data.get('password') as string;
 
     try {
-      const res = await login({ email, password }).unwrap();
+      const res = await login({ userName, password }).unwrap();
       dispatch(setCredentials({ ...res }));
       navigate('/');
     } catch (err) {
@@ -73,10 +73,10 @@ const LoginPage = () => {
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address or Username"
-            name="email"
-            autoComplete="email"
+            id="userName"
+            label="User Name"
+            name="userName"
+            autoComplete="userName"
             autoFocus
           />
           <TextField
